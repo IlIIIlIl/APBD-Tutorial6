@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Tutorial6.DTOs;
+﻿namespace Tutorial6.DTOs;
 
 public class CreateRoomDto
 {
-    [StringLength(100)]
     public string Name { get; set; } = string.Empty;
     public string BuildingCode { get; set; } =  string.Empty;
     public int Floor { get; set; }

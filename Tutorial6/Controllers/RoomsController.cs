@@ -89,8 +89,8 @@ namespace Tutorial6.Controllers
             var query = Rooms.AsQueryable();
 
             if (id.HasValue) query = query.Where(a => a.Id == id);
-            if (floor.HasValue) query = query.Where(a => a.Floor >= floor);
-            if (capacity.HasValue) query = query.Where(a => a.Capacity >= capacity);
+            if (floor.HasValue) query = query.Where(a => a.Floor == floor);
+            if (capacity.HasValue) query = query.Where(a => a.Capacity == capacity);
             if (!string.IsNullOrEmpty(name)) query = query.Where(a => a.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
             if (!string.IsNullOrEmpty(buildingCode)) query = query.Where(a => a.BuildingCode.Equals(buildingCode, StringComparison.OrdinalIgnoreCase));
             if (hasProjector.HasValue) query = query.Where(a => a.HasProjector == hasProjector);
@@ -131,6 +131,27 @@ namespace Tutorial6.Controllers
             }
             
             Rooms.Remove(room);
+            
+            return NoContent();
+        }
+        
+        
+        [HttpPut("{id}")]
+        public IActionResult Put([FromRoute] int id, [FromBody] CreateRoomDto createRoomDto)
+        {
+            var room = Rooms.FirstOrDefault(r => r.Id == id);
+
+            if (room == null)
+            {
+                return NotFound($"Room with ID {id} was not found.");
+            }
+
+            room.Name = createRoomDto.Name;
+            room.BuildingCode = createRoomDto.BuildingCode;
+            room.Capacity = createRoomDto.Capacity;
+            room.HasProjector = createRoomDto.HasProjector;
+            room.IsActive = createRoomDto.IsActive;
+            room.Floor = createRoomDto.Floor;
             
             return NoContent();
         }
